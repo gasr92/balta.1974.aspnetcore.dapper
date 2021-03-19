@@ -2,8 +2,15 @@ namespace BaltaStore.Domain.StoreContext.Entities
 {
     public class OrderItem
     {
-        public Product Product { get; set; }
-        public string Quantity { get; set; }
-        public decimal Price { get; set; }
+        public OrderItem(Product product, decimal quantity)
+        {
+            this.Product = product;
+            this.Quantity = quantity;
+            this.Price = product.Price;
+        }
+
+        public Product Product { get; private set; }
+        public decimal Quantity { get; private set; }
+        public decimal Price { get; private set; }
     }
 }
