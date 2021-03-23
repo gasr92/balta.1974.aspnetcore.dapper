@@ -29,10 +29,13 @@ namespace BaltaStore.Domain.StoreContext.Entities
 
 
 
-        public void AddItem(OrderItem item)
+        public void AddItem(Product product, decimal quantity)
         {
             //valida o item
+            if (quantity > product.QuantityOnHand)
+                AddNotification("OrderItem", $"Produto {product.Title} não tem {quantity} itens em estoque");
 
+            var item = new OrderItem(product, quantity);
             _items.Add(item);
         }
 
@@ -47,7 +50,7 @@ namespace BaltaStore.Domain.StoreContext.Entities
             // gera o numero do pedido
             this.Number = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 8).ToUpper();
 
-            if(_items.Count == 0)
+            if (_items.Count == 0)
                 AddNotification("Order", "O pedido não possui itens");
         }
 
@@ -64,13 +67,13 @@ namespace BaltaStore.Domain.StoreContext.Entities
             // a cada 5 produtos gera uma entrega
             var count = 1;
             var deliveries = new List<Delivery>();
-            deliveries.Add(new Delivery(DateTime.Now.AddDays(5)));
+            //deliveries.Add(new Delivery(DateTime.Now.AddDays(5)));
 
-            foreach(var item in _items)
+            foreach (var item in _items)
             {
-                if(count == 5)
+                if (count == 5)
                 {
-                    count = 0;
+                    count = 1;
                     deliveries.Add(new Delivery(DateTime.Now.AddDays(5)));
                 }
                 count++;
@@ -85,6 +88,6 @@ namespace BaltaStore.Domain.StoreContext.Entities
             this.Status = EOrderStatus.Canceled;
             _deliveries.ForEach(x => x.Cancel());
         }
-        
+
     }
 }

@@ -14,6 +14,8 @@ namespace BaltaStore.Domain.StoreContext.Entities
 
             if(product.QuantityOnHand < quantity)
                 AddNotification("Quantity", "Produto fora de estoque");
+
+            this.Product.DecreaseQuantityOnHand(quantity);
         }
 
         public Product Product { get; private set; }
