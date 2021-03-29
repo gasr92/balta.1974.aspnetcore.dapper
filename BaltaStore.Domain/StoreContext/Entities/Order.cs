@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BaltaStore.Domain.StoreContext.Enums;
+using BaltaStore.Shared.Entities;
 using FluentValidator;
 
 namespace BaltaStore.Domain.StoreContext.Entities
 {
-    public class Order : Notifiable
+    public class Order : Entity
     {
         private readonly List<OrderItem> _items;
         private readonly List<Delivery> _deliveries;
